@@ -3,12 +3,17 @@
   <head>
     <title>Test weibo auth</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- weibo js sdk -->
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1326358006" type="text/javascript" charset="utf-8"></script>
+    <!-- qq js sdk -->
+    <script type="text/javascript"
+src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="1104561849" data-redirecturi="http://localhost:8082" charset="utf-8"></script>
   </head>
   <body>
     <h1>Test weibo auth</h1>
     <wb:login-button id="wb_connect_btn">登录按钮</wb:login-button>
     <a id="douban-login" href="" target="_Blank">豆瓣登录</a>
+    <span id="qqLoginBtn">qqlogin</span>
     <script>
       function authorizeTarget(clientId){
         return "https://www.douban.com/service/auth2/auth?client_id=" + clientId + "&redirect_uri=http://testauth.oyyd.net/response&response_type=code";
@@ -28,6 +33,10 @@
                   }
               }
           });
+      });
+
+      QC.Login({
+         btnId:"qqLoginBtn" //插入按钮的节点id
       });
     </script>
   </body>
