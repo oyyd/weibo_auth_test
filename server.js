@@ -12,7 +12,6 @@ app.get('/', function(req, res){
 });
 
 app.get('/response', function(req, res){
-  console.log('REQUEST IN: ' + req.query.code);
   makeRequest(req.query.code, function(data){
     console.log('REQUEST END');
     res.send('The token of <strong>'+req.ip+'</strong> is: ' + req.query.code
@@ -38,12 +37,12 @@ function makeRequest(token, cb){
   var options = {
     hostname: 'www.douban.com',
     port: 443,
-    path: '/service/auth2/token?' + ,
+    path: '/service/auth2/token',
     method: 'POST',
-    // headers: {
-    //   'Content-Type': 'application/x-www-form-urlencoded',
-    //   'Content-Length': postData.length
-    // }
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': postData.length
+    }
   };
 
   var req = https.request(options, function(res) {
@@ -52,6 +51,8 @@ function makeRequest(token, cb){
       data += chunk;
     });    
   });
+
+  console.log('REQ', req);
 
   req.on('close', function(){
     cb(data);
@@ -62,7 +63,7 @@ function makeRequest(token, cb){
   });
 
   // write data to request body
-  req.write('');
+  req.write(postData);
   req.end();
 }
 
