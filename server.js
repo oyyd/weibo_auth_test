@@ -8,16 +8,15 @@ var clientId = '0c0c4982bc466d712424dc8834d34853';
 var clientSecret = '0acb43d73e6abbce';
 
 app.get('/', function(req, res){
-  console.log('REQUEST IN');
   res.sendFile('index.html', {root: __dirname});
 });
 
 app.get('/response', function(req, res){
   console.log('code in', req.query.code);
-  makeRequest(req.query.code, function(data){
-    console.log('REQUEST END');
-    res.send('The token of <strong>'+req.ip+'</strong> is: ' + req.query.code
+  getAccessToken(req.query.code, function(data){
+    console.log('The token of <strong>'+req.ip+'</strong> is: ' + req.query.code
         + '<br/> After request we get this:<br/>' + data);
+
   });
 });
 
@@ -26,7 +25,7 @@ app.get('/token_detail', function(req, res){
   console.log(req.body);
 });
 
-function makeRequest(token, cb){
+function getAccessToken(token, cb){
   var data = '';
   var postData = querystring.stringify({
     'client_id' : clientId,
@@ -64,6 +63,32 @@ function makeRequest(token, cb){
   // write data to request body
   req.write(postData);
   req.end();
+}
+
+function getUserInfo(accessToken, cb){
+  var data = '';
+  var option = {
+    hostname: ' api.douban.com',
+    port: 443,
+    path: ' v2/user/~m',
+    method: 'GET',
+    headers: {
+      'Authorization: Bearer': accessToken
+    }
+  };
+
+  var req = https.request(options, function(res){
+    res.setEncoding('utf8');
+    res.on('data', function (chunk) {
+      data += chunk;
+      cb(data);
+    });    
+  });
+
+  req.end();
+  req.on('error', function(){
+    console.log('Error Ocured');
+  });
 }
 
 var port = 8082;
