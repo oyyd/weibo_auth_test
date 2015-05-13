@@ -16,6 +16,10 @@ app.get('/response', function(req, res){
   getAccessToken(req.query.code, function(data){
     console.log('The token of <strong>'+req.ip+'</strong> is: ' + req.query.code
         + '<br/> After request we get this:<br/>' + data);
+    var dataJson = JSON.parse(data);
+    getUserInfo(dataJson["access_token"], dataJson["douban_user_name"], function(data){
+      res.send(data);
+    });
 
   });
 });
@@ -65,29 +69,34 @@ function getAccessToken(token, cb){
   req.end();
 }
 
-function getUserInfo(accessToken, cb){
+function getUserInfo(accessToken, username, cb){
   var data = '';
-  var option = {
-    hostname: ' api.douban.com',
+  var options = {
+    hostname: 'api.douban.com',
     port: 443,
-    path: ' v2/user/~m',
+    path: '/v2/user/~me',
     method: 'GET',
     headers: {
-      'Authorization: Bearer': accessToken
+      'Authorization': 'Bearer '+ accessToken
     }
   };
+
+  console.log(accessToken);
 
   var req = https.request(options, function(res){
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
-      data += chunk;
-      cb(data);
+      data += chunk;    
     });    
+    res.on('end',function(){
+     cb(data);
+    });
   });
 
   req.end();
-  req.on('error', function(){
-    console.log('Error Ocured');
+
+  req.on('error', function(e){
+    console.log('Error Ocured', e);
   });
 }
 
