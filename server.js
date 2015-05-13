@@ -6,9 +6,9 @@ app.get('/', function(req, res){
   res.sendFile('index.html', {root: __dirname});
 });
 
-app.get('/response&code=:code', function(req, res){
+app.get('/response', function(req, res){
   res.send('success');
-  console.log(req.params.code);
+  console.log(req.query.code);
 });
 
 var port = 8082;
