@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test weibo auth</title>
+  </head>
+  <body>
+    <h1>Test weibo auth</h1>
+    <a id="auth-link" href="" target="_Blank">Go to weibo login</a>
+    <script>
+    function authorizeTarget(clientId){
+      return "https://api.weibo.com/oauth2/authorize?client_id=" + clientId + "&redirect_uri=http://testauth.oyyd.net/response&response_type=code";
+    }
+    document.querySelector('#auth-link').href = authorizeTarget("1326358006");
+    </script>
+  </body>
+</html>
