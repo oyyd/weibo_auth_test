@@ -4,8 +4,8 @@ var querystring = require('querystring');
 
 var app = express();
 
-var clientId = '1326358006';
-var clientSecret = '827c8cfce0877fb37cc24b076945840f';
+var clientId = '0c0c4982bc466d712424dc8834d34853';
+var clientSecret = '0acb43d73e6abbce';
 
 app.get('/', function(req, res){
   res.sendFile('index.html', {root: __dirname});
@@ -32,13 +32,13 @@ function makeRequest(token, cb){
     'client_secret' : clientSecret,
     'grant_type': 'authorization_code',
     'code': token,
-    'redirect_uri': 'abc'
+    'redirect_uri': 'http://testauth.oyyd.net/response'
   });
-
+  //https://www.douban.com/service/auth2/token
   var options = {
-    hostname: 'api.weibo.com',
+    hostname: 'www.douban.com',
     port: 443,
-    path: '/oauth2/access_token?'+postData,
+    path: '/service/auth2/token?' + ,
     method: 'POST',
     // headers: {
     //   'Content-Type': 'application/x-www-form-urlencoded',
@@ -46,16 +46,12 @@ function makeRequest(token, cb){
     // }
   };
 
-  console.log('TARGET PATH', options.path);
-
   var req = https.request(options, function(res) {
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
       data += chunk;
     });    
   });
-
-  console.log('REQ', req);
 
   req.on('close', function(){
     cb(data);

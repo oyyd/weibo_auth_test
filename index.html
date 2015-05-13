@@ -11,7 +11,7 @@
     <a id="douban-login" href="" target="_Blank">豆瓣登录</a>
     <script>
       function authorizeTarget(clientId){
-        return "https://www.douban.com/service/auth2/auth?client_id=" + clientId + "&redirect_uri=http://localhost:8082/response&response_type=code";
+        return "https://www.douban.com/service/auth2/auth?client_id=" + clientId + "&redirect_uri=http://testauth.oyyd.net/response&response_type=code";
       }
       document.querySelector('#douban-login').href = authorizeTarget("0c0c4982bc466d712424dc8834d34853");
 
