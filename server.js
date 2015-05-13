@@ -8,10 +8,12 @@ var clientId = '0c0c4982bc466d712424dc8834d34853';
 var clientSecret = '0acb43d73e6abbce';
 
 app.get('/', function(req, res){
+  console.log('REQUEST IN');
   res.sendFile('index.html', {root: __dirname});
 });
 
 app.get('/response', function(req, res){
+  console.log('code in', req.query.code);
   makeRequest(req.query.code, function(data){
     console.log('REQUEST END');
     res.send('The token of <strong>'+req.ip+'</strong> is: ' + req.query.code
@@ -49,14 +51,11 @@ function makeRequest(token, cb){
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
       data += chunk;
+      cb(data);
     });    
   });
 
   console.log('REQ', req);
-
-  req.on('close', function(){
-    cb(data);
-  });
 
   req.on('error', function(e) {
     console.log('problem with request: ' + e.message);
