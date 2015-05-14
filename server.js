@@ -24,6 +24,10 @@ app.get('/response', function(req, res){
   });
 });
 
+app.get('/qq_login_success', function(req, res){
+  res.send('login success');
+});
+
 app.get('/token_detail', function(req, res){
   console.log('Get token_detail');
   console.log(req.body);

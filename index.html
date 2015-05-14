@@ -2,12 +2,13 @@
 <html xmlns:wb="http://open.weibo.com/wb">
   <head>
     <title>Test weibo auth</title>
+    <meta property="qc:admins" content="425136652341540671146654" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <!-- weibo js sdk -->
     <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1326358006" type="text/javascript" charset="utf-8"></script>
     <!-- qq js sdk -->
     <script type="text/javascript"
-src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="1104561849" data-redirecturi="http://localhost:8082" charset="utf-8"></script>
+src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101218812" data-redirecturi="http://testauth.oyyd.net/qq_login_success" charset="utf-8" data-callback="true"></script>
   </head>
   <body>
     <h1>Test weibo auth</h1>
@@ -26,7 +27,7 @@ src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="11045618
               type:"3,4",
               callback : {
                   login:function(o){  //登录后的回调函数
-                    console.log('login');
+                    console.log(o);
                   },  
                   logout:function(){  //退出后的回调函数
                     console.log('logout');                    
@@ -37,7 +38,16 @@ src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="11045618
 
       QC.Login({
          btnId:"qqLoginBtn" //插入按钮的节点id
+      }, function(data){
+	 console.log(data);
       });
+
+      document.querySelector('#qqLoginBtn').onclick = function(){
+         QC.Login.showPopup({
+           appId: '101218812',
+	   redirectURI: 'http://testauth.oyyd.net/qq_login_success'
+         });
+      }
     </script>
   </body>
 </html>
